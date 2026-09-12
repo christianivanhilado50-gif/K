@@ -19,7 +19,6 @@
 body {
     margin: 0;
     min-height: 100vh;
-
     font-family: Arial, sans-serif;
 
     background: linear-gradient(
@@ -44,7 +43,9 @@ body {
     position: fixed;
     font-size: 32px;
     z-index: 1;
+
     animation: float 3s ease-in-out infinite;
+    user-select: none;
 }
 
 .f1 {
@@ -103,7 +104,6 @@ body {
         0 10px 30px rgba(255, 105, 180, 0.25);
 
     position: relative;
-
     z-index: 5;
 
     animation: appear 0.8s ease;
@@ -167,118 +167,101 @@ p {
 ========================= */
 
 .button-area {
-
     width: 100%;
-
     height: 60px;
 
     display: flex;
 
     justify-content: center;
-
     align-items: center;
 
     gap: 25px;
 }
 
 
-/* SAME SIZE */
+/* =========================
+   BUTTONS
+========================= */
 
 button {
     width: 105px;
-
     height: 46px;
 
     padding: 0;
 
     border: none;
-
     border-radius: 25px;
 
     font-size: 16px;
-
     font-weight: bold;
 
     cursor: pointer;
+
+    flex-shrink: 0;
 }
 
 
 /* =========================
-   YES BUTTON
+   YES
 ========================= */
 
 .yes {
-
     background: #ff69b4;
-
     color: white;
 
     transition: 0.2s;
 }
 
 .yes:hover {
-
     background: #e7549b;
-
     transform: scale(1.07);
 }
 
 
 /* =========================
-   NO BUTTON
+   NO
 ========================= */
 
-/*
-   IMPORTANT:
-   At first, NO is static.
-   This keeps YES and NO perfectly aligned.
-*/
-
 .no {
-
     position: static;
 
     background: #eeeeee;
-
     color: #777;
 
     transition:
         left 0.25s ease,
-        top 0.25s ease;
+        top 0.25s ease,
+        transform 0.2s ease;
 
     z-index: 20;
 }
 
 
 /*
-   After clicking NO,
-   JavaScript adds this class.
+   After NO is clicked,
+   it becomes a floating button.
 */
 
 .no.running {
-
     position: fixed;
 }
 
 
 /* =========================
-   SUCCESS PAGE
+   SUCCESS
 ========================= */
 
 #success {
-
     display: none;
 }
 
 #success.show {
-
     display: block;
 
     animation: appear 0.7s ease;
 }
 
 .message {
-
     background: #fff0f7;
 
     padding: 20px;
@@ -293,7 +276,6 @@ button {
 }
 
 .back {
-
     display: inline-block;
 
     margin-top: 20px;
@@ -351,7 +333,7 @@ button {
 
 
 <!-- =========================
-     DECORATIONS
+     FLOWERS
 ========================= -->
 
 <div class="flower f1">🌸</div>
@@ -371,10 +353,14 @@ button {
     </div>
 
     <h1>
-        Can We Just Be Friends?
+       Hi Km 
     </h1>
 
     <p>
+
+    🌷🌷🌷🌷🌷
+
+        <br><br>
 
         I know things between us didn't turn out
         the way we once hoped, and I respect
@@ -393,20 +379,18 @@ button {
 
     <div class="question">
 
-        Can we just be friends? 🌷
+        can we just be friends? 🌷
 
     </div>
 
 
-    <!--
-         YES AND NO START
-         PERFECTLY ALIGNED
-    -->
+    <!-- BUTTONS -->
 
     <div class="button-area">
 
         <button
             class="yes"
+            id="yesButton"
             onclick="sayYes()">
 
             YES 🌸
@@ -439,15 +423,14 @@ button {
         🌸💗🌷
     </div>
 
-
     <h1>
-        Thank You 🌸
+        YEEEHEEEEYYY Thank You, Kiyyy!!🥳🥳
     </h1>
 
 
     <div class="message">
 
-        I really appreciate it. 💗
+        I really appreciate it, bunjing. 💗
 
         <br><br>
 
@@ -493,11 +476,17 @@ button {
 <script>
 
 /* =========================
-   GET NO BUTTON
+   ELEMENTS
 ========================= */
 
 const noButton =
     document.getElementById("noButton");
+
+const mainCard =
+    document.getElementById("main");
+
+const successCard =
+    document.getElementById("success");
 
 
 /* =========================
@@ -507,23 +496,14 @@ const noButton =
 function moveNo() {
 
     /*
-       Change NO from its normal
-       position to a fixed position.
+       Make NO a floating button.
     */
 
     noButton.classList.add("running");
 
 
     /*
-       Small safe space around
-       the screen.
-    */
-
-    const padding = 15;
-
-
-    /*
-       Get button dimensions.
+       Get button size.
     */
 
     const buttonWidth =
@@ -534,7 +514,15 @@ function moveNo() {
 
 
     /*
-       Calculate safe area.
+       Safe distance from screen edges.
+    */
+
+    const padding = 20;
+
+
+    /*
+       Calculate maximum
+       possible position.
     */
 
     const maxX =
@@ -549,32 +537,29 @@ function moveNo() {
 
 
     /*
-       Random position.
+       Generate random position.
     */
 
     const x =
         Math.floor(
             Math.random() *
-            (maxX - padding)
+            Math.max(1, maxX - padding)
         ) + padding;
 
 
     const y =
         Math.floor(
             Math.random() *
-            (maxY - padding)
+            Math.max(1, maxY - padding)
         ) + padding;
 
 
     /*
-       Move button.
+       Move NO.
     */
 
-    noButton.style.left =
-        x + "px";
-
-    noButton.style.top =
-        y + "px";
+    noButton.style.left = x + "px";
+    noButton.style.top = y + "px";
 
 }
 
@@ -589,12 +574,11 @@ function sayYes() {
        Hide main card.
     */
 
-    document.getElementById("main")
-        .style.display = "none";
+    mainCard.style.display = "none";
 
 
     /*
-       Hide NO.
+       Hide NO button.
     */
 
     noButton.style.display = "none";
@@ -604,8 +588,7 @@ function sayYes() {
        Show success card.
     */
 
-    document.getElementById("success")
-        .classList.add("show");
+    successCard.classList.add("show");
 
 }
 
@@ -617,19 +600,17 @@ function sayYes() {
 function goBack() {
 
     /*
-       Hide success.
+       Hide success card.
     */
 
-    document.getElementById("success")
-        .classList.remove("show");
+    successCard.classList.remove("show");
 
 
     /*
-       Show main.
+       Show main card.
     */
 
-    document.getElementById("main")
-        .style.display = "block";
+    mainCard.style.display = "block";
 
 
     /*
@@ -641,13 +622,12 @@ function goBack() {
 
     /*
        Return NO to its original
-       aligned position.
+       perfectly aligned position.
     */
 
     noButton.classList.remove("running");
 
     noButton.style.left = "";
-
     noButton.style.top = "";
 
 }
